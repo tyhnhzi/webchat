@@ -138,7 +138,7 @@ const TempFile = mongoose.model('TempFile', tempFileSchema);
 const VoiceMessage = mongoose.model('VoiceMessage', voiceMessageSchema);
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://tyhnhzi_db_user:texm2Ib9eyW00f0b@cluster0.zysn3ou.mongodb.net/?appName=Cluster0')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://')
   .then(() => console.log('✓ MongoDB Connected'))
   .catch(err => console.log('⚠ MongoDB Connection Error (non-critical):', err.message));
 
