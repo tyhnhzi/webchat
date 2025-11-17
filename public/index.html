@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#667eea">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Chat thời gian thực - Chia sẻ ảnh, voice chat, gọi trực tiếp">
+  
+  <title>Bảng chat 💬</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="themes.css">
+  
+  <style>
+    @supports (-webkit-touch-callout: none) {
+      input[type="text"],
+      textarea,
+      button {
+        font-size: 16px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>💬 Bảng Tin Nhắn</h1>
+      <p class="subtitle">ĐỪNG HỎI NHIỀU</p>
+    </header>
+
+    <!-- User Setup Modal -->
+    <div class="setup-modal" id="setupModal">
+      <div class="setup-card">
+        <h2>Chào bạn! 👋</h2>
+        <input 
+          type="text" 
+          id="usernameInput" 
+          placeholder="Nhập tên của bạn..."
+          maxlength="20"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+        >
+        <button onclick="setupUser()" style="width: 100%;">Bắt đầu</button>
+      </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- Main Content -->
+    <div class="main" id="mainContent" style="display: none;">
+      <!-- Sidebar - Message History by Months -->
+      <aside class="sidebar">
+        <div class="sidebar-title">📅 Theo Tháng</div>
+        <div class="month-list" id="monthList">
+          <div class="month-item active" onclick="filterMessages('all', this);">
+            🔥 Tất cả
+          </div>
+        </div>
+      </aside>
+
+      <!-- Messages Display Area -->
+      <section class="chat-area">
+        <!-- Messages Container -->
+        <div class="messages-container" id="messagesContainer">
+          <div class="empty-state">
+            Hãy là người đầu tiên chia sẻ! 🚀
+          </div>
+        </div>
+
+        <!-- Message Input with Tools -->
+        <div class="input-area">
+          <div class="input-tools">
+            <input 
+              type="file" 
+              id="imageInput" 
+              accept="image/*" 
+              style="display: none;"
+              onchange="uploadImage()"
+            >
+            <button onclick="document.getElementById('imageInput').click()" class="tool-btn" title="Gửi ảnh">🖼️</button>
+          </div>
+          
+          <textarea 
+            id="messageInput" 
+            placeholder="Nhập tin nhắn..."
+            rows="2"
+            autocomplete="off"
+            spellcheck="false"
+            maxlength="1000"
+          ></textarea>
+          <button onclick="sendMessage()" class="send-btn" title="Gửi (Enter)">📤</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- User Info Footer -->
+    <div class="user-info" id="userInfo">
+      <div class="user-left">
+        <span id="usernameDisplay"></span>
+        <span id="adminBadge" style="display: none;" class="admin-badge">👑 Admin</span>
+      </div>
+      <div class="theme-selector">
+        <label>🎨 Theme:</label>
+        <div class="theme-options">
+          <button class="theme-btn theme-dark active" onclick="setTheme('dark')" title="Dark"></button>
+          <button class="theme-btn theme-light" onclick="setTheme('light')" title="Light"></button>
+          <button class="theme-btn theme-ocean" onclick="setTheme('ocean')" title="Ocean"></button>
+          <button class="theme-btn theme-neon" onclick="setTheme('neon')" title="Neon"></button>
+          <button class="theme-btn theme-forest" onclick="setTheme('forest')" title="Forest"></button>
+          <button class="theme-btn theme-sunset" onclick="setTheme('sunset')" title="Sunset"></button>
+          <button class="theme-btn theme-dracula" onclick="setTheme('dracula')" title="Dracula"></button>
+          <button class="theme-btn theme-nord" onclick="setTheme('nord')" title="Nord"></button>
+          <button class="theme-btn theme-gruvbox" onclick="setTheme('gruvbox')" title="Gruvbox"></button>
+          <button class="theme-btn theme-cyberpunk" onclick="setTheme('cyberpunk')" title="Cyberpunk"></button>
+        </div>
+      </div>
+      <div class="user-right">
+        <span id="onlineCount"></span>
+        <button onclick="logout()" title="Đăng xuất">🚪</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Socket.io Library -->
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  
+  <!-- App Scripts -->
+  <script src="script.js"></script>
+</body>
+</html>
