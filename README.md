@@ -5,7 +5,7 @@
 ## 🎯 Tính năng
 
 ✅ **Hiển thị tin nhắn theo thời gian thực** - Socket.io  
-✅ **Lưu trữ kép** - SQLite + MongoDB (chống mất dữ liệu)  
+✅ **Lưu trữ kép** - SQLite + MongoDB 
 ✅ **Nhóm theo tháng** - Sidebar hiển thị danh sách tháng  
 ✅ **Lưu IP + Tên** - Theo dõi người dùng tự động  
 ✅ **Telegram Bot** - Thông báo khi có hoạt động  
@@ -78,12 +78,12 @@ http://localhost:5555
 ### MongoDB (Cloud)
 - Backup tự động của tất cả dữ liệu
 - Có thể query từ web app khác
-- Nếu SQLite lỗi, dữ liệu vẫn an toàn
+- Nếu SQL lỗi, dữ liệu vẫn an toàn
 
 ## 🎨 Tính năng Giao Diện
 
 - **Dark Theme** với gradient màu tím-xanh
-- **Sidebar** hiển thị tháng, click để filter
+- **Sidebar** hiển thị tháng, click để chọn tháng
 - **Real-time Animation** khi nhận tin nhắn
 - **User Info** hiển thị tên hiện tại
 - **Responsive** - Tự động trên mobile
@@ -106,7 +106,7 @@ Format thông báo:
 ## 🐛 Troubleshooting
 
 ### MongoDB không kết nối
-- Vẫn hoạt động, SQLite là chính
+- Vẫn hoạt động, chủ yếu lưu ở SQL
 - Kiểm tra connection string trong `.env`
 
 ### Telegram không gửi notification
@@ -175,11 +175,11 @@ CMD ["npm", "start"]
 
 ## 📝 License
 
-MIT - Tự do sử dụng, sửa đổi, phân phối
+MIT - Tự do sử dụng, sửa đổi, phát hành
 
 ## 💬 Support
 
-Có vấn đề? Tạo issue hoặc liên hệ!
+Có vấn đề hoặc cải tiến? Tạo issue hoặc liên hệ!
 
 ---
 **Made with Tyhnhzi❤️ for real-time communication**
