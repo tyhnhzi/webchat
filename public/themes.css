@@ -1,0 +1,139 @@
+/* ===== THEME SYSTEM ===== */
+
+/* Dark Theme (Default) */
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --success: #48bb78;
+  --danger: #f56565;
+  --warning: #ed8936;
+  --info: #4299e1;
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --surface-light: #334155;
+  --text: #f1f5f9;
+  --text-secondary: #cbd5e1;
+}
+
+/* Light Theme */
+html[data-theme="light"] {
+  --primary: #5a67d8;
+  --secondary: #6b46c1;
+  --success: #38a169;
+  --danger: #e53e3e;
+  --warning: #d69e2e;
+  --info: #3182ce;
+  --bg: #f7fafc;
+  --surface: #edf2f7;
+  --surface-light: #cbd5e1;
+  --text: #1a202c;
+  --text-secondary: #4a5568;
+}
+
+/* Ocean Theme */
+html[data-theme="ocean"] {
+  --primary: #0ea5e9;
+  --secondary: #0284c7;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --info: #06b6d4;
+  --bg: #0c1b2e;
+  --surface: #1a2a3a;
+  --surface-light: #2d3d4d;
+  --text: #e2e8f0;
+  --text-secondary: #b0bac3;
+}
+
+/* Forest Theme */
+html[data-theme="forest"] {
+  --primary: #059669;
+  --secondary: #047857;
+  --success: #10b981;
+  --danger: #dc2626;
+  --warning: #d97706;
+  --info: #0891b2;
+  --bg: #0f172a;
+  --surface: #1e3a1f;
+  --surface-light: #2d5a30;
+  --text: #f1fdf4;
+  --text-secondary: #c1dfc3;
+}
+
+/* Theme Selector */
+.theme-selector {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.theme-selector label {
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: default;
+}
+
+.theme-options {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.theme-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-family: inherit;
+}
+
+.theme-btn:hover {
+  transform: scale(1.1);
+}
+
+.theme-btn.active {
+  border-color: var(--text);
+  box-shadow: 0 0 8px rgba(102, 126, 234, 0.5);
+}
+
+/* Theme Colors in Selector */
+.theme-dark { background: #1e293b; }
+.theme-light { background: #edf2f7; border-color: #333 !important; }
+.theme-ocean { background: #1a2a3a; }
+.theme-forest { background: #1e3a1f; }
+.theme-dracula { background: #44475a; }
+.theme-nord { background: #3b4252; }
+
+/* Smooth Transition */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+input, textarea, button {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* Mobile Theme Selector */
+@media (max-width: 600px) {
+  .theme-selector {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .theme-btn {
+    width: 22px;
+    height: 22px;
+    font-size: 10px;
+  }
+}

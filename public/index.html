@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#667eea">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Chat thời gian thực - Chia sẻ ảnh">
+  
+  <title>💬</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="themes.css">
+  <link rel="manifest" href="manifest.json">
+  
+  <style>
+    @supports (-webkit-touch-callout: none) {
+      input[type="text"],
+      textarea,
+      button {
+        font-size: 16px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="appContainer">
+    <!-- Header -->
+    <header class="header">
+      <h1>💬</h1>
+      <p class="subtitle">tyhnhzi.dev</p>
+    </header>
+
+    <!-- User Setup Modal -->
+    <div class="setup-modal" id="setupModal">
+      <div class="setup-card">
+        <h2>Chào bạn!</h2>
+        <input 
+          type="text" 
+          id="usernameInput" 
+          placeholder="Nhập tên của bạn..."
+          maxlength="200"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+        >
+        <button onclick="setupUser()" style="width: 100%;">Bắt đầu</button>
+      </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- Profile Modal -->
+    <div class="modal" id="profileModal" style="display: none;">
+      <div class="modal-content profile-modal">
+        <span class="close" onclick="closeProfileModal()">&times;</span>
+        <div class="profile-header">
+          <div class="profile-avatar" id="profileAvatar">👤</div>
+          <h2 id="profileUsername"></h2>
+          <p class="profile-status" id="profileStatus"></p>
+        </div>
+        <div class="profile-body">
+          <div class="profile-section">
+            <label>📝 Giới thiệu</label>
+            <p id="profileBio" class="profile-bio">Chưa có giới thiệu</p>
+          </div>
+          <div class="profile-section">
+            <label>📊 Thống kê</label>
+            <div class="profile-stats">
+              <div class="stat-item">
+                <span class="stat-value" id="profileMessageCount">0</span>
+                <span class="stat-label">Tin nhắn</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value" id="profileJoinDate">-</span>
+                <span class="stat-label">Tham gia</span>
+              </div>
+            </div>
+          </div>
+          <div class="profile-section" id="editSection" style="display: none;">
+            <button onclick="openEditProfile()" class="btn-primary">✏️ Chỉnh sửa trang cá nhân</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal" id="editProfileModal" style="display: none;">
+      <div class="modal-content edit-profile-modal">
+        <span class="close" onclick="closeEditProfileModal()">&times;</span>
+        <h2>✏️ Chỉnh sửa trang cá nhân</h2>
+        <div class="edit-profile-body">
+          <div class="form-group">
+            <label>Avatar (Emoji)</label>
+            <input type="text" id="editAvatar" placeholder="👤" maxlength="2">
+          </div>
+          <div class="form-group">
+            <label>Giới thiệu bản thân</label>
+            <textarea id="editBio" placeholder="Viết vài dòng về bạn..." maxlength="200" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Trạng thái</label>
+            <select id="editStatus">
+              <option value="online">🟢 Hoạt động</option>
+              <option value="away">🟡 Vắng mặt</option>
+              <option value="busy">🔴 Bận</option>
+              <option value="offline">⚫ Ẩn</option>
+            </select>
+          </div>
+          <button onclick="saveProfile()" class="btn-primary">💾 Lưu thay đổi</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Voice Recorder Modal -->
+    <div class="modal" id="voiceRecorderModal" style="display: none;">
+      <div class="modal-content voice-recorder-modal">
+        <span class="close" onclick="closeVoiceRecorder()">&times;</span>
+        <h2>🎤 Ghi Âm Tin Nhắn</h2>
+        <div class="voice-recorder-body">
+          <div class="recorder-display">
+            <div class="recorder-time" id="recorderTime">00:00</div>
+            <div class="recorder-waveform" id="recorderWaveform">
+              <div class="wave"></div>
+              <div class="wave"></div>
+              <div class="wave"></div>
+              <div class="wave"></div>
+              <div class="wave"></div>
+            </div>
+          </div>
+          <div class="recorder-controls">
+            <button onclick="startVoiceRecording()" id="startRecordBtn" class="recorder-btn recording">🔴 Ghi</button>
+            <button onclick="stopVoiceRecording()" id="stopRecordBtn" class="recorder-btn" style="display: none;">⏹️ Dừng</button>
+          </div>
+          <div id="voicePlayback" style="display: none; margin-top: 16px;">
+            <audio id="voiceAudio" controls style="width: 100%; margin-bottom: 12px;"></audio>
+            <div style="display: flex; gap: 8px;">
+              <button onclick="sendVoiceMessage()" class="btn-primary" style="flex: 1;">✅ Gửi</button>
+              <button onclick="reRecordVoice()" class="btn-secondary" style="flex: 1;">🔄 Ghi Lại</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main" id="mainContent" style="display: none;">
+      <!-- Sidebar - Message History by Months -->
+      <aside class="sidebar">
+        <div class="sidebar-title">📅Tháng</div>
+        <div class="month-list" id="monthList">
+          <div class="month-item active" onclick="filterMessages('all', this);">
+            🔥Tất cả
+          </div>
+        </div>
+      </aside>
+
+      <!-- Messages Display Area -->
+      <section class="chat-area">
+        <!-- Messages Container -->
+        <div class="messages-container" id="messagesContainer">
+          <div class="empty-state">
+            Hãy là người đầu tiên chia sẻ!
+          </div>
+        </div>
+
+        <!-- Message Input with Tools -->
+        <div class="input-area">
+          <div class="input-tools">
+            <input 
+              type="file" 
+              id="imageInput" 
+              accept="image/*" 
+              style="display: none;"
+              onchange="uploadImage()"
+            >
+            <input 
+              type="file" 
+              id="videoInput" 
+              accept="video/*" 
+              style="display: none;"
+              onchange="uploadVideo()"
+            >
+            <button onclick="document.getElementById('imageInput').click()" class="tool-btn" title="Gửi ảnh">🖼️</button>
+            <button onclick="document.getElementById('videoInput').click()" class="tool-btn" title="Gửi video">🎥</button>
+            <button onclick="toggleVoiceRecorder()" class="tool-btn" id="voiceBtn" title="Ghi âm">🎤</button>
+          </div>
+          
+          <textarea 
+            id="messageInput" 
+            placeholder="Nhập tin nhắn..."
+            rows="2"
+            autocomplete="off"
+            spellcheck="false"
+            maxlength="1000"
+          ></textarea>
+          <button onclick="sendMessage()" class="send-btn" title="Gửi (Enter)">📤</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- User Info Footer -->
+    <div class="user-info" id="userInfo">
+      <div class="user-left">
+        <span id="usernameDisplay"></span>
+      </div>
+      <div class="theme-selector">
+        <label>🎨 Theme:</label>
+        <div class="theme-options">
+          <button class="theme-btn theme-dark" onclick="setTheme('dark')" title="Dark"></button>
+          <button class="theme-btn theme-light" onclick="setTheme('light')" title="Light"></button>
+          <button class="theme-btn theme-ocean" onclick="setTheme('ocean')" title="Ocean"></button>
+          <button class="theme-btn theme-forest active" onclick="setTheme('forest')" title="Forest"></button>
+        </div>
+      </div>
+      <div class="user-right">
+        <span id="onlineCount"></span>
+        <button onclick="openBackgroundUploader()" title="🖼️ Đổi Background">🖼️</button>
+        <button onclick="removeBackground()" title="🗑️ Xoá Background">🗑️</button>
+        <button onclick="logout()" title="Đăng xuất">🚪</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Socket.io Library -->
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <!-- Cropper.js for image cropping -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+  
+  <!-- App Scripts -->
+  <script src="script.js"></script>
+  <script>
+    // Register Service Worker for PWA notifications
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
+    }
+  </script>
+</body>
+</html>
